@@ -167,7 +167,7 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 
 | Deputado    |                |             |             |            |
 | ----------- | -----------    | ----------- | ----------- |----------- |
-| ID (PK)     | ID_partido (FK)|    nome     |   urlFoto   |   email    |
+| id (PK)     | id_partido (FK)|    nome     |   url_foto   |   email    |
 
 
 | Despesa_deputado     |                |             |             |                |            |
@@ -177,7 +177,7 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 
 | Partido     |                |           |
 | ----------- | -----------    | --------- |
-| ID (PK)     | sigla          |    nome   | 
+| id (PK)     | sigla          |    nome   | 
 
 
 | Proposicao  |                |             |             |            |      
