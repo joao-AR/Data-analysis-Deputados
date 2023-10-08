@@ -1,5 +1,7 @@
-package com.example.dataAnalysisDeputados.entity;
+package com.example.dataAnalysisDeputados.entity.Responses;
 
+import com.example.dataAnalysisDeputados.entity.Despesas;
+import com.example.dataAnalysisDeputados.entity.Link;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;

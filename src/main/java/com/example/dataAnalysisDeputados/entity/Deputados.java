@@ -10,6 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Deputados {
     private int id;
+
+    public int getId_partido() {
+        return id_partido;
+    }
+
+    public void setId_partido(int id_partido) {
+        this.id_partido = id_partido;
+    }
+
+    private int id_partido;
     @JsonIgnore
     private String uri;
     private String nome;
