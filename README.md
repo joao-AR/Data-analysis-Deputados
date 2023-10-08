@@ -1,6 +1,6 @@
 # Data-analysis-Deputados
 ## Introdução
-Este projeto tem como objetivo principal reunir informações sobre deputados, seus partidos e as despesas associadas ao longo dos meses/anos. Além disso, pretende elaborar um relatório abrangendo o número de proposições apresentadas por cada deputado, com o propósito de analisar a atividade legislativa e identificar os parlamentares mais proativos, assim como as temáticas de suas proposições.
+Este projeto tem como objetivo principal reunir informações sobre deputados, seus partidos e as despesas associadas ao longo dos meses/anos. Além disso, pretende elaborar um relatório abrangendo o número de proposições apresentadas por cada deputado e os tipos de proposições mais realizadas, com o propósito de analisar a atividade legislativa e identificar os parlamentares mais proativos, assim como as temáticas de suas proposições.
 
 
 
@@ -163,7 +163,7 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 | ID (PK)     | ID_partido (FK)|    nome     |   urlFoto   |   email    |
 
 
-| Despesa     |                |             |             |                |            |
+| Despesa_deputado     |                |             |             |                |            |
 | ----------- | -----------    | ----------- | ----------- |-----------     |----------- |
 | ID (PK)     |ID_deputado (FK)|    ano      |   mes       |   tipoDespesa  |valorLiquedo|
 
@@ -182,3 +182,70 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 | -----------    | -----------  | -----------|----------- |      
 | COD (PK)       |sigla         |   nome     |   descricao|
 
+## Script SQL implementação do banco de dados 
+
+```sql
+CREATE SCHEMA IF NOT EXISTS "camara"
+```
+```sql 
+create table if not exists camara.deputado(
+	id int,
+	id_partido int,
+	nome char(200) not null,
+	url_foto char(300),
+	email char (100),
+	constraint pk_deputado primary key(id)
+);
+```
+
+
+ ```sql
+    create table if not exists camara.partido(
+        id int,
+        sigla char(50) not null,
+        nome char(150)not null,
+        constraint pk_partido primary key(id)
+    );
+```
+
+```sql 
+alter table camara.deputado
+	add constraint fk_deputado_partido foreign key(id_partido) references camara.partido(id) on update cascade;
+```
+
+```sql
+create table if not exists camara.despesa_deputado(
+	id int,
+	id_deputado int,
+	ano int,
+	mes int,
+	tipo_despesa char(300),
+	valor_liquedo float,
+	constraint pk_despesa primary key(id),
+	constraint fk_despesa_deputado foreign key(id_deputado) references camara.deputado(id) on update cascade,
+    constraint check_valor_positivo check (valor_liquedo > 0 or valor_liquedo = 0)
+
+);
+```
+
+```sql
+create table if not exists camara.proposicao_tipo(
+	cod int,
+	sigla char(50),
+	nome char(100),
+	descricao char(200),
+	constraint pk_proposicao_tipo primary key(cod)
+);
+```
+
+```sql
+    create table if not exists camara.proposicao(
+        id int,
+        id_deputado int,
+        cod_tipo int ,
+        ano int,
+        ementa char(800),
+        constraint pk_proposicao primary key(id),
+        constraint fk_proposicao_deputado foreign key(id_deputado) references camara.deputado(id) on update cascade
+    );
+```
