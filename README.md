@@ -165,7 +165,7 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 
 | Despesa_deputado     |                |             |             |                |            |
 | ----------- | -----------    | ----------- | ----------- |-----------     |----------- |
-| ID (PK)     |ID_deputado (FK)|    ano      |   mes       |   tipoDespesa  |valorLiquedo|
+| cod_documento (PK)     |id_deputado (FK)|    ano      |   mes       |   tipo_despesa  |valorLiquedo|
 
 
 | Partido     |                |           |
@@ -175,12 +175,12 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 
 | Proposicao  |                |             |             |            |      
 | ----------- | -----------    | ----------- | ----------- |----------- |      
-| ID (PK)     |ID_deputado (FK)|CodTipo (FK) |   ano       |   ementa   |
+| id (PK)     |id_deputado (FK)|cod_tipo (FK) |   ano       |   ementa   |
 
 
 | Proposicao_Tipo|              |            |            |      
 | -----------    | -----------  | -----------|----------- |      
-| COD (PK)       |sigla         |   nome     |   descricao|
+| cod (PK)       |sigla         |   nome     |   descricao|
 
 ## Script SQL implementação do banco de dados 
 
@@ -215,13 +215,13 @@ alter table camara.deputado
 
 ```sql
 create table if not exists camara.despesa_deputado(
-	id int,
+	cod_documento int,
 	id_deputado int,
 	ano int,
 	mes int,
 	tipo_despesa char(300),
 	valor_liquedo float,
-	constraint pk_despesa primary key(id),
+	constraint pk_despesa primary key(cod_documento),
 	constraint fk_despesa_deputado foreign key(id_deputado) references camara.deputado(id) on update cascade,
     constraint check_valor_positivo check (valor_liquedo > 0 or valor_liquedo = 0)
 
