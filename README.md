@@ -189,6 +189,10 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 | -----------    | -----------  | -----------|----------- |      
 | cod (PK)       |sigla         |   nome     |   descricao|
 
+## Diagrama Entidade Relacionamento
+
+![DER](IMG/DER.png)
+
 ## Script SQL implementação do banco de dados 
 
 ```sql
