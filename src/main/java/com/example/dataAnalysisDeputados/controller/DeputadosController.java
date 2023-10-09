@@ -21,7 +21,7 @@ public class DeputadosController {
     public List<Deputados> getDeputadosList(){
         List<Partidos> partidos = ptdController.getPartidos(); // Lista de todos os partidos
 
-        String url = "https://dadosabertos.camara.leg.br/api/v2/deputados?itens=50&dataInicio=2023-01-01&ordem=ASC&ordenarPor=id";
+        String url = "https://dadosabertos.camara.leg.br/api/v2/deputados?itens=700&dataInicio=2023-01-01&ordem=ASC&ordenarPor=id";
         RestTemplate template = new RestTemplate();
         ResponseDeputado response = template.getForObject(url, ResponseDeputado.class);
         List<Deputados> deputados = response.getDados(); // Lista de deputados
