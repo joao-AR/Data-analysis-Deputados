@@ -34,6 +34,7 @@ public class ProposicaoController {
         RestTemplate template = new RestTemplate();
         ResponseProposicao response = template.getForObject(url, ResponseProposicao.class);
         List<Proposicao> proposicao = response.getDados();
+        // colocando os IDS dos deputados em cada proposicao
         proposicao.forEach(prop ->{
             List<AutorProposicao> autores = autorProposicaoController.getAutoresP(prop.getId());
             autores.forEach(aut ->{
@@ -42,13 +43,13 @@ public class ProposicaoController {
                     String nomeAutor = aut.getNome();
                     if( nomeAutor.equals(nomeDeputado)){
                         prop.setId_deputado(deputado.getId());
-                    }else if(nomeAutor.equals("Poder Executivo")){
-                        prop.setId_deputado(1);
                     }
                 });
             });
         });
 
+        // Remover proposições que não foram feitas por um Deputado, ex: proposição fetia pelo poder Executivo
+        proposicao.removeIf(prop -> prop.getId_deputado() == 0);
         return proposicao;
     }
 }

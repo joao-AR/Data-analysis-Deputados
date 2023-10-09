@@ -15,7 +15,6 @@ public class AutorProposicaoController {
 
     public List<AutorProposicao> getAutoresP(int id_prop){
         String url = String.format("https://dadosabertos.camara.leg.br/api/v2/proposicoes/%d/autores",id_prop);
-        System.out.println(url);
         RestTemplate template = new RestTemplate();
         ResponseAutoresProposicao response = template.getForObject(url, ResponseAutoresProposicao.class);
         List<AutorProposicao> autoresProp = response.getDados();
