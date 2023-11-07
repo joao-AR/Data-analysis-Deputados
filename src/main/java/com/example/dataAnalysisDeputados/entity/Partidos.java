@@ -1,43 +1,29 @@
 package com.example.dataAnalysisDeputados.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.*;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Data
+@Entity(name = "partidos")
+@Table(name = "partido", schema = "camara")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Partidos {
-    int id;
+    @Id // PK
+    Integer id;
     String sigla;
     String nome;
-    @JsonIgnore
+    
+    @JsonIgnore // ignora no json
+    @Transient //ignorar coluna no banco
     String uri;
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getSigla() {
-        return sigla;
-    }
-
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-
 
 }
