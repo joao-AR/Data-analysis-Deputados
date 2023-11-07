@@ -16,26 +16,26 @@ public class DespesasDeputadoController {
         this.deputadosController = deputadosController;
     }
 
-    @GetMapping("/despesas")
-    public List<Despesas> getDespesas(){
-        List<Deputados> deputados = deputadosController.getDeputadosList();
-        List<Despesas> despesas = new ArrayList<>();
-        deputados.forEach(deputado -> {
-            String url = String.format("https://dadosabertos.camara.leg.br/api/v2/deputados/%d/despesas?ano=2023&ordem=ASC", deputado.getId());
-            RestTemplate template = new RestTemplate();
-            ResponseDespesas response = template.getForObject(url, ResponseDespesas.class);
-
-            if (response != null) {
-                List<Despesas> despesasDoDeputado = response.getDados();
-                despesasDoDeputado.forEach(despesa -> {
-                    despesa.setId_deputado(deputado.getId());
-                    despesas.add(despesa);
-                });
-            }
-
-        });
-
-        return despesas;
-    }
+   // @GetMapping("/despesas")
+//    public List<Despesas> getDespesas(){
+//        List<Deputados> deputados = deputadosController.getDeputadosList();
+//        List<Despesas> despesas = new ArrayList<>();
+//        deputados.forEach(deputado -> {
+//            String url = String.format("https://dadosabertos.camara.leg.br/api/v2/deputados/%d/despesas?ano=2023&ordem=ASC", deputado.getId());
+//            RestTemplate template = new RestTemplate();
+//            ResponseDespesas response = template.getForObject(url, ResponseDespesas.class);
+//
+//            if (response != null) {
+//                List<Despesas> despesasDoDeputado = response.getDados();
+//                despesasDoDeputado.forEach(despesa -> {
+//                    despesa.setId_deputado(deputado.getId());
+//                    despesas.add(despesa);
+//                });
+//            }
+//
+//        });
+//
+//        return despesas;
+//    }
 
 }
