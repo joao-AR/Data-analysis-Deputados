@@ -7,6 +7,7 @@ Este projeto tem como objetivo principal reunir informações sobre deputados, s
 - Quantidade de proposições feitas pelo Deputado/Partido
 - Tipos de proposições mais realizadas
 - Quantidade de Deputados por partido
+#### Obs: Os relatórios são referentes ao período de 2019 - 2022
 
 ## Serviço de coleta de dados 
 Neste projeto, utilizamos uma API gratuita disponibilizada pelo governo brasileiro, que oferece uma ampla gama de informações acessíveis por meio da API. O foco da coleta de dados foi direcionado exclusivamente para os dados relacionados aos Deputados, Partidos e Proposições.
