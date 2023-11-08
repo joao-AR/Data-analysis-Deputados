@@ -162,8 +162,11 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
     ]
 }
 ```
+## Diagrama Entidade Relacionamento
 
-## Tabelas que estão presentes no bando de dados
+![DER](IMG/DER.png)
+
+## Tabelas Mapeadas que estão presentes no banco de dados
 
 | Deputado    |                |             |             |            |
 | ----------- | -----------    | ----------- | ----------- |----------- |
@@ -189,9 +192,7 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 | -----------    | -----------  | -----------|----------- |      
 | cod (PK)       |sigla         |   nome     |   descricao|
 
-## Diagrama Entidade Relacionamento
 
-![DER](IMG/DER.png)
 
 ## Script SQL implementação do banco de dados 
 
@@ -255,7 +256,7 @@ create table if not exists camara.proposicao_tipo(
         id_deputado int,
         cod_tipo int ,
         ano int,
-        ementa char(800),
+        ementa varchar,
         constraint pk_proposicao primary key(id),
         constraint fk_proposicao_deputado foreign key(id_deputado) references camara.deputado(id) on update cascade
     );
