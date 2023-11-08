@@ -25,7 +25,7 @@ public class Deputados {
     private String uri;
 
     private String nome;
-
+    @Transient //ignorar coluna no banco
     private String siglaPartido;
 
     @Transient //ignorar coluna no banco

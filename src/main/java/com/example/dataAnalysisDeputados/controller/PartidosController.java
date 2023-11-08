@@ -25,7 +25,7 @@ public class PartidosController {
 
 
     public List<Partidos> getParidosAPI(){
-        String url = "https://dadosabertos.camara.leg.br/api/v2/partidos?itens=1000&ordem=ASC&ordenarPor=id";
+        String url = "https://dadosabertos.camara.leg.br/api/v2/partidos?dataInicio=2019-01-01&itens=1000&ordem=asc&ordenarPor=sigla";
         RestTemplate template = new RestTemplate();
         ResponsePartidos response = template.getForObject(url, ResponsePartidos.class);
         List<Partidos> partidos = response.getDados();
