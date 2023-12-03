@@ -15,7 +15,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Partidos {
     @Id // PK
     Integer id;
@@ -26,4 +25,9 @@ public class Partidos {
     @Transient //ignorar coluna no banco
     String uri;
 
+    public Partidos(Integer id, String sigla, String nome) {
+        this.id = id;
+        this.sigla = sigla;
+        this.nome = nome;
+    }
 }

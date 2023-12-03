@@ -1,5 +1,9 @@
 package com.example.dataAnalysisDeputados.controller;
 
+import DAO.DeputadoDAO;
+import DAO.DeputadoImpl;
+import DAO.PartidoDAO;
+import DAO.PartidoImpl;
 import com.example.dataAnalysisDeputados.Interface.DeputadoRepository;
 import com.example.dataAnalysisDeputados.entity.Deputados;
 import com.example.dataAnalysisDeputados.entity.Partidos;
@@ -11,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -22,23 +29,27 @@ public class DeputadosController {
         this.ptdController = ptdController;
     }
 
-    @Autowired
-    DeputadoRepository repository;
-
     @GetMapping
     public List<Deputados> getDeputadosBanco(){
-        List<Deputados> deputadoList = repository.findAll().stream().toList();
-        return  deputadoList;
+        DeputadoDAO deputadoDAO = new DeputadoImpl();
+        List<Deputados> deputadosList = null;
+        try {
+            deputadosList = deputadoDAO.getAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return  deputadosList;
     }
 
 
-    public List<Deputados> getDeputadosAPI(){
+    public List<Deputados> getDeputadosAPI() throws SQLException {
         List<Partidos> partidos = ptdController.getPartidosBanco(); // Lista de todos os partidos
 
-        String url = "https://dadosabertos.camara.leg.br/api/v2/deputados?itens=10000&dataInicio=2019-01-01&ordem=ASC&ordenarPor=id";
+        String url = "https://dadosabertos.camara.leg.br/api/v2/deputados?dataInicio=2019-01-01&dataFim=2022-12-31&ordem=ASC&ordenarPor=id";
         RestTemplate template = new RestTemplate();
         ResponseDeputado response = template.getForObject(url, ResponseDeputado.class);
         List<Deputados> deputados = response.getDados(); // Lista de deputados
+
         // obter o ID do partido e adicionar ao deputado
         deputados.forEach(deputado ->{
                 partidos.forEach(partido->{
@@ -49,14 +60,37 @@ public class DeputadosController {
                     }
                 });
         });
+
         return deputados;
     }
 
     @PostMapping
-    public List<Deputados>  saveDeputados(){
-            List<Deputados> deputados =  getDeputadosAPI();
-            repository.saveAll(deputados);
+    public List<Deputados>  saveDeputados() throws SQLException {
+            List<Deputados> deputados = getDeputadosAPI();
+            DeputadoDAO deputadoDAO= new DeputadoImpl();
+            ArrayList<Integer> deputadosIds = new ArrayList<>();
+
+            deputados.forEach(
+                deputado->{
+
+                    try {
+                        boolean resp =  deputadosIds.contains(deputado.getId());
+                        if(!resp){
+                            int result = deputadoDAO.insert(deputado);
+                            deputadosIds.add(deputado.getId());
+                        }else{
+                            System.out.println("Id já existe");
+                            System.out.println(deputado.getId());
+                        }
+
+                    } catch (SQLException e){
+                        throw new RuntimeException(e);
+                    }
+                }
+            );
+
             return deputados;
+
     }
 
 }

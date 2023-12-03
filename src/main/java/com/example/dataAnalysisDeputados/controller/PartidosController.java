@@ -1,28 +1,26 @@
 package com.example.dataAnalysisDeputados.controller;
 
-import com.example.dataAnalysisDeputados.Interface.PartidoRepository;
+import DAO.PartidoDAO;
+import DAO.PartidoImpl;
 import com.example.dataAnalysisDeputados.entity.Partidos;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponsePartidos;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.SQLException;
 import java.util.List;
 @RestController
 @RequestMapping("partidos")
 public class PartidosController {
-
-    @Autowired
-    private PartidoRepository repository;
     @GetMapping
-    public List<Partidos> getPartidosBanco(){
-        List<Partidos> partidoList = repository.findAll().stream().toList();
+    public List<Partidos> getPartidosBanco() throws SQLException {
+        PartidoDAO partidoDAO = new PartidoImpl();
+        List<Partidos> partidoList = partidoDAO.getAll();
         return  partidoList;
     }
-
 
     public List<Partidos> getParidosAPI(){
         String url = "https://dadosabertos.camara.leg.br/api/v2/partidos?dataInicio=2019-01-01&itens=1000&ordem=asc&ordenarPor=sigla";
@@ -35,7 +33,16 @@ public class PartidosController {
     @PostMapping
     public List<Partidos> savePartidos(){
         List<Partidos> partidos =  getParidosAPI();
-        repository.saveAll(partidos);
+        PartidoDAO partidoDAO = new PartidoImpl();
+        partidos.forEach(
+                partido->{
+                    try {
+                        int result = partidoDAO.insert(partido);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
         return partidos;
     }
 

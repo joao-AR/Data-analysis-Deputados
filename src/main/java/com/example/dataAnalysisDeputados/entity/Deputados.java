@@ -15,6 +15,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Deputados {
+
+    public Deputados(Integer id, int id_partido, String nome, String urlFoto, String email) {
+        this.id = id;
+        this.id_partido = id_partido;
+        this.nome = nome;
+        this.urlFoto = urlFoto;
+        this.email = email;
+    }
+
     @Id
     private Integer id;
 

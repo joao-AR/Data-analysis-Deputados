@@ -245,8 +245,8 @@ create table if not exists camara.despesa_deputado(
 create table if not exists camara.proposicao_tipo(
 	cod int,
 	sigla char(50),
-	nome char(100),
-	descricao char(200),
+	nome varchar,
+	descricao varchar,
 	constraint pk_proposicao_tipo primary key(cod)
 );
 ```

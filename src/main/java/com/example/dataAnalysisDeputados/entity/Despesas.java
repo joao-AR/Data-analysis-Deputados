@@ -9,6 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Despesas {
+    public Despesas(int codDocumento, int id_deputado, int ano, int mes, String tipoDespesa ) {
+        this.id_deputado = id_deputado;
+        this.ano = ano;
+        this.mes = mes;
+        this.tipoDespesa = tipoDespesa;
+        this.codDocumento = codDocumento;
+    }
+
     private int id_deputado;
 
     public int getId_deputado() {

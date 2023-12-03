@@ -15,6 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Proposicao {
+    public Proposicao(Integer id, int id_deputado, int codTipo, int ano, String ementa) {
+        this.id = id;
+        this.id_deputado = id_deputado;
+        this.codTipo = codTipo;
+        this.ano = ano;
+        this.ementa = ementa;
+    }
+
     @Id
     private Integer id;
 

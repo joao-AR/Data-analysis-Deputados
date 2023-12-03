@@ -1,5 +1,9 @@
 package com.example.dataAnalysisDeputados.controller;
 
+import DAO.DeputadoDAO;
+import DAO.DeputadoImpl;
+import DAO.ProposicaoDAO;
+import DAO.ProposicaoImpl;
 import com.example.dataAnalysisDeputados.Interface.PartidoRepository;
 import com.example.dataAnalysisDeputados.Interface.ProposicaoRepository;
 import com.example.dataAnalysisDeputados.entity.AutorProposicao;
@@ -7,6 +11,7 @@ import com.example.dataAnalysisDeputados.entity.Deputados;
 import com.example.dataAnalysisDeputados.entity.Partidos;
 import com.example.dataAnalysisDeputados.entity.Proposicao;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseAutoresProposicao;
+import com.example.dataAnalysisDeputados.entity.Responses.ResponseDeputado;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponsePartidos;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseProposicao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +29,6 @@ import java.util.List;
 @RequestMapping("proposicao")
 public class ProposicaoController {
 
-    @Autowired
-    private ProposicaoRepository repository;
     private final AutorProposicaoController autorProposicaoController;
     private final DeputadosController deputadosController;
 
@@ -34,9 +38,16 @@ public class ProposicaoController {
     }
 
 
-
+    @GetMapping
     public List<Proposicao> getProposicaoBanco(){
-        List<Proposicao> proposicaoList = repository.findAll().stream().toList();
+
+        ProposicaoDAO proposicaoDAO = new ProposicaoImpl();
+        List<Proposicao> proposicaoList = null;
+        try {
+            proposicaoList = proposicaoDAO.getAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return  proposicaoList;
     }
 
@@ -49,9 +60,8 @@ public class ProposicaoController {
     }
 
     @PostMapping
-    public List<Proposicao> saveProposicao(){
+    public List<Proposicao> saveProposicao() throws SQLException {
         List<Proposicao> proposicoes = getProposicaoAPI();
-
         List<Deputados> deputados = deputadosController.getDeputadosAPI();
 
         //colocando os IDS dos deputados em cada proposicao
@@ -66,11 +76,25 @@ public class ProposicaoController {
                     }
                 });
             });
+
         });
 
         // Remover proposições que não foram feitas por um Deputado, ex: proposição fetia pelo poder Executivo
-        proposicoes.removeIf(prop -> prop.getId_deputado() == 0);
-        repository.saveAll(proposicoes);
+
+        ProposicaoDAO proposicaoDAO = new ProposicaoImpl();
+
+        proposicoes.forEach(
+                prop->{
+                    try {
+                        if(prop.getId_deputado() != 0 ){
+                            int result = proposicaoDAO.insert(prop);
+                        }
+                    } catch (SQLException e){
+                        throw new RuntimeException(e);
+                    }
+                }
+
+        );
         return proposicoes;
     }
 
