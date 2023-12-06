@@ -1,7 +1,7 @@
 package com.example.dataAnalysisDeputados.controller;
 
-import DAO.ProposicaoDAO;
-import DAO.ProposicaoImpl;
+import com.example.dataAnalysisDeputados.DAO.ProposicaoDAO;
+import com.example.dataAnalysisDeputados.DAO.ProposicaoImpl;
 
 import com.example.dataAnalysisDeputados.entity.AutorProposicao;
 import com.example.dataAnalysisDeputados.entity.Deputados;

@@ -1,6 +1,6 @@
 # Data-analysis-Deputados
 ## Introdução
-Este projeto tem como objetivo principal reunir informações sobre deputados, seus partidos e as despesas associadas ao longo dos meses/anos. Além disso, pretende elaborar um relatório abrangendo o número de proposições apresentadas por cada deputado e os tipos de proposições mais realizadas, com o propósito de analisar a atividade legislativa e identificar os parlamentares mais proativos, assim como as temáticas de suas proposições.
+Este projeto tem como objetivo principal reunir informações sobre deputados, seus partidos e as despesas associadas ao longo do mandato (2019-2022). Além disso, pretende elaborar um relatório abrangendo o número de proposições apresentadas por cada deputado e partido e os tipos de proposições mais realizadas, com o propósito de analisar a atividade legislativa e identificar os parlamentares mais proativos, assim como as temáticas de suas proposições.
 
 ## Relatorios
 - Despesas dos deputados
@@ -299,3 +299,106 @@ values (66385,37903,'Julio Arcoverde','https://www.camara.leg.br/internet/deputa
     insert into camara.proposicao
     values (1198010,141422,139,2023,'Altera redação de dispositivos do artigo 4° da Lei n° 10.201, de 14 de fevereiro de 2001, que instituiu o Fundo Nacional de Segurança Pública - FNSP.')
 ```
+## Views (2019-2022)
+
+### Despesas De Cada deputado
+```sql
+    CREATE VIEW camara."despesas_deputados_view"
+    AS
+    SELECT 
+        d.id as id_deputado,
+        d.nome as nome,
+        p.id as id_partido,
+        p.sigla as sigla_partido,
+        COUNT(*) as qtd,
+        SUM(dp.valor_liquedo) as total_gasto
+    FROM 
+        camara.deputado d 
+    JOIN 
+        camara.despesa_deputado dp ON d.id = dp.id_deputado
+    JOIN 
+        camara.partido p ON d.id_partido = p.id
+    GROUP BY 
+        d.id, p.id
+    HAVING 
+        COUNT(*) > 1 
+    ORDER BY   
+        sigla_partido,total_gasto DESC; ;
+
+    ALTER TABLE camara."despesas_deputados_view"
+        OWNER TO joaor;
+```
+
+### Despesas De Cada Partido
+
+```sql
+        CREATE VIEW camara.despesas_partidos_view
+    AS
+    select 
+        p.id as id_partido,
+        p.sigla,
+        SUM(dp.valor_liquedo) as total_liquido
+    FROM 
+        camara.despesa_deputado dp 
+    JOIN 
+        camara.deputado d on d.id = dp.id_deputado
+    JOIN 
+        camara.partido p on d.id_partido = p.id
+    GROUP BY
+        p.id
+    ORDER BY
+        total_liquido DESC;
+
+    ALTER TABLE camara.despesas_partidos_view
+        OWNER TO joaor;
+```
+
+### Quantidade De Proposicao Feitas Por Cada Deputado
+
+``` sql
+    CREATE VIEW camara.proposicao_deputado_view
+    AS
+    SELECT
+        d.id as id_deputado,
+        d.nome,
+        COUNT(*) as qtd_prop
+        
+    FROM 
+        camara.proposicao pr
+    JOIN
+        camara.deputado d on d.id = pr.id_deputado
+    JOIN 
+        camara.proposicao_tipo prt on prt.cod = pr.cod_tipo
+    GROUP BY d.id ,prt.cod
+    ORDER BY qtd_prop DESC;
+
+    ALTER TABLE camara.proposicao_deputado_view
+        OWNER TO joaor;
+```
+
+### Quantidade De Proposicao Feitas Por Partido
+
+```sql 
+    CREATE VIEW camara.proposicao_partido_view
+    AS
+    SELECT 	
+        pt.id as id_partido,
+        pt.sigla,
+        COUNT(*) as qtd_prop
+        
+    FROM 
+        camara.proposicao pr
+    JOIN 
+        camara.deputado d on d.id = pr.id_deputado
+    JOIN 
+        camara.partido pt on d.id_partido = pt.id
+    GROUP BY 
+        pt.id
+    ORDER BY 
+        qtd_prop DESC;
+
+    ALTER TABLE camara.proposicao_partido_view
+        OWNER TO joaor;
+```
+
+### Quantidade De Cada Tipo De Proposicao 

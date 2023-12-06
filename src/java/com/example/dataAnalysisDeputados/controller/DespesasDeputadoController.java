@@ -1,6 +1,6 @@
 package com.example.dataAnalysisDeputados.controller;
 
-import DAO.*;
+import com.example.dataAnalysisDeputados.DAO.*;
 import com.example.dataAnalysisDeputados.entity.Deputados;
 import com.example.dataAnalysisDeputados.entity.Despesas;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseDespesas;
@@ -21,18 +21,18 @@ public class DespesasDeputadoController {
         this.deputadosController = deputadosController;
     }
 
-    @GetMapping
+
     public List<Despesas> getDespesasBanco() throws SQLException {
         DespesasDepDAO despesasDepDAO = new DespesaDepImpl();
         List<Despesas> despesaList = despesasDepDAO.getAll();
         return  despesaList;
     }
-
+    @GetMapping
     public List<Despesas> getDespesasAPI(){
         List<Deputados> deputados = deputadosController.getDeputadosBanco();
         List<Despesas> despesas = new ArrayList<>();
         deputados.forEach(deputado -> {
-            String url = String.format("https://dadosabertos.camara.leg.br/api/v2/deputados/%d/despesas?ano=2023&ordem=ASC", deputado.getId());
+            String url = String.format("https://dadosabertos.camara.leg.br/api/v2/deputados/%d/despesas?ano=2019&ano=2020&ano=2021&ano=2022&ordem=ASC", deputado.getId());
             RestTemplate template = new RestTemplate();
             ResponseDespesas response = template.getForObject(url, ResponseDespesas.class);
 
@@ -44,6 +44,7 @@ public class DespesasDeputadoController {
                 });
             }
 
+
         });
 
         return despesas;
@@ -54,24 +55,32 @@ public class DespesasDeputadoController {
         List<Despesas> despesaList =  getDespesasAPI();
         DespesasDepDAO despesasDepDAO = new DespesaDepImpl();
         ArrayList<Integer> codsProp = new ArrayList<>();
-
+        despesaList.forEach(
+                despesa -> {
+                    boolean resp =  codsProp.contains(despesa.getCodDocumento());
+                    if (despesa.getValorLiquido() < 0){
+                        despesa.setValorLiquido(0);
+                    }
+                    if(!resp){
+                        codsProp.add(despesa.getCodDocumento());
+                    }else{
+                        System.out.println("cod documento já existe");
+                    }
+                }
+        );
         despesaList.forEach(
                 despesa->{
-
                     try {
-                        boolean resp =  codsProp.contains(despesa.getCodDocumento());
-                        if(!resp){
+                        boolean resp = codsProp.contains(despesa.getCodDocumento());
+                        if(resp){
                             int result = despesasDepDAO.insert(despesa);
-                            codsProp.add(despesa.getCodDocumento());
-                        }else{
-                            System.out.println("Id já existe");
                         }
-
                     } catch (SQLException e){
                         throw new RuntimeException(e);
                     }
                 }
         );
+
         return despesaList;
     }
 

@@ -1,6 +1,5 @@
-package DAO;
+package com.example.dataAnalysisDeputados.DAO;
 
-import com.example.dataAnalysisDeputados.entity.Deputados;
 import com.example.dataAnalysisDeputados.entity.Proposicao;
 
 import java.sql.*;

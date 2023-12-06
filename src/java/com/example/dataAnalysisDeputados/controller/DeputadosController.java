@@ -1,7 +1,7 @@
 package com.example.dataAnalysisDeputados.controller;
 
-import DAO.DeputadoDAO;
-import DAO.DeputadoImpl;
+import com.example.dataAnalysisDeputados.DAO.DeputadoDAO;
+import com.example.dataAnalysisDeputados.DAO.DeputadoImpl;
 import com.example.dataAnalysisDeputados.entity.Deputados;
 import com.example.dataAnalysisDeputados.entity.Partidos;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseDeputado;
@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController

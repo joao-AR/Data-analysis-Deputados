@@ -1,6 +1,5 @@
-package DAO;
+package com.example.dataAnalysisDeputados.DAO;
 
-import com.example.dataAnalysisDeputados.entity.Deputados;
 import com.example.dataAnalysisDeputados.entity.Despesas;
 
 import java.sql.*;
@@ -28,7 +27,8 @@ public class DespesaDepImpl implements DespesasDepDAO{
             int ano = rs.getInt("ano");
             int mes = rs.getInt("mes");
             String tipoDespesa = rs.getString("tipo_despesa");
-            Despesas despesa = new Despesas(oid,idDeputado,ano,mes,tipoDespesa);
+            float valorLiquedo = rs.getFloat("valor_liquedo");
+            Despesas despesa = new Despesas(oid,idDeputado,ano,mes,tipoDespesa,valorLiquedo);
             despesaList.add(despesa);
         }
 
@@ -43,7 +43,7 @@ public class DespesaDepImpl implements DespesasDepDAO{
     @Override
     public int insert(Despesas despesa) throws SQLException {
         Connection con = Database.getConnection();
-        String sql = "INSERT INTO camara.despesa_deputado (cod_documento,id_deputado,ano,mes,tipo_despesa) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO camara.despesa_deputado (cod_documento,id_deputado,ano,mes,tipo_despesa,valor_liquedo) VALUES(?,?,?,?,?,?)";
 
         PreparedStatement ps = con.prepareStatement(sql);
 
@@ -52,6 +52,10 @@ public class DespesaDepImpl implements DespesasDepDAO{
         ps.setInt(3, despesa.getAno());
         ps.setInt(4, despesa.getMes());
         ps.setString(5, despesa.getTipoDespesa());
+        if(despesa.getValorLiquido() < 0){
+            despesa.setValorLiquido(0);
+        }
+        ps.setFloat(6,despesa.getValorLiquido());
 
         int result = ps.executeUpdate();
         Database.closePreparedStatement(ps);

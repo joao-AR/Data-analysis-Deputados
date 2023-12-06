@@ -1,7 +1,7 @@
 package com.example.dataAnalysisDeputados.controller;
 
-import DAO.PartidoDAO;
-import DAO.PartidoImpl;
+import com.example.dataAnalysisDeputados.DAO.PartidoDAO;
+import com.example.dataAnalysisDeputados.DAO.PartidoImpl;
 import com.example.dataAnalysisDeputados.entity.Partidos;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponsePartidos;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,7 @@
 package com.example.dataAnalysisDeputados.controller;
 
-import DAO.TipoPropDAO;
-import DAO.TipoPropImpl;
+import com.example.dataAnalysisDeputados.DAO.TipoPropDAO;
+import com.example.dataAnalysisDeputados.DAO.TipoPropImpl;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseTipoProposicao;
 import com.example.dataAnalysisDeputados.entity.TipoProposicao;
 import org.springframework.web.bind.annotation.GetMapping;

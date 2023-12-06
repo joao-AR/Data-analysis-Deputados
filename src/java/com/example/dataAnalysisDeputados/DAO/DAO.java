@@ -1,4 +1,4 @@
-package DAO;
+package com.example.dataAnalysisDeputados.DAO;
 import java.sql.SQLException;
 import java.util.List;
 

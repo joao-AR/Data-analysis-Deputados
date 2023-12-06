@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Despesas {
-    public Despesas(int codDocumento, int id_deputado, int ano, int mes, String tipoDespesa ) {
+    public Despesas(int codDocumento, int id_deputado, int ano, int mes, String tipoDespesa,float valorLiquido ) {
         this.id_deputado = id_deputado;
         this.ano = ano;
         this.mes = mes;
         this.tipoDespesa = tipoDespesa;
         this.codDocumento = codDocumento;
+        this.valorLiquido = valorLiquido;
     }
 
     private int id_deputado;
@@ -47,6 +48,7 @@ public class Despesas {
     private String nomeFornecedor;
     @JsonIgnore
     private String cnpjCpfFornecedor;
+
     private float valorLiquido;
     @JsonIgnore
     private String valorGlosa;
