@@ -1,17 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import { Deputado } from './components/Deputado'
 import './App.css'
-import { DeputadoData } from './interface/DeputadoData'
 import { useDeputadoData } from './hooks/DeputadoDataHook'
+import Navbar from './components/navBar'
 
 function App() {
   // const data:DeputadoData[] = [];
-  const {data} = useDeputadoData();
+  // const {data} = useDeputadoData();
   return (
     <div className="container">
-      <div>
+      <Navbar/>
+      {/* <div>
         {
         data?.map(
           deputadoData => 
@@ -23,7 +22,7 @@ function App() {
               email={deputadoData.email}/>
             )
         }
-      </div>
+      </div> */}
     </div>
   )
 }

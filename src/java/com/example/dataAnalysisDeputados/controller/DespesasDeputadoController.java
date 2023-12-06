@@ -16,19 +16,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DespesasDeputadoController {
     private final DeputadosController deputadosController;
     public DespesasDeputadoController(DeputadosController deputadosController) {
         this.deputadosController = deputadosController;
     }
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+
     @GetMapping("despesas-deputado")
     public List<DespesaDeputado> getDespesasBanco() throws SQLException {
         DespesasDAO despesasDepDAO = new DespesaImpl();
         List<DespesaDeputado> despesaList = despesasDepDAO.getDespesasDeputadoView();
         return  despesaList;
     }
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+
     @GetMapping("despesas-partido")
     public List<DespesaPartido> getDespesasPartidoView() throws SQLException {
         DespesasDAO despesasDepDAO = new DespesaImpl();
@@ -57,7 +58,6 @@ public class DespesasDeputadoController {
 
         return despesas;
     }
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("despesas")
     public List<Despesas> saveDespesas(){
         List<Despesas> despesaList =  getDespesasAPI();
