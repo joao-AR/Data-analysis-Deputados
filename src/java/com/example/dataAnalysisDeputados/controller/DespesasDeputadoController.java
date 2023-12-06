@@ -2,11 +2,13 @@ package com.example.dataAnalysisDeputados.controller;
 
 import com.example.dataAnalysisDeputados.DAO.*;
 import com.example.dataAnalysisDeputados.entity.Deputados;
+import com.example.dataAnalysisDeputados.entity.DespesaDeputado;
+import com.example.dataAnalysisDeputados.entity.DespesaPartido;
 import com.example.dataAnalysisDeputados.entity.Despesas;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseDespesas;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,20 +16,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 @RestController
-@RequestMapping("despesas")
 public class DespesasDeputadoController {
     private final DeputadosController deputadosController;
     public DespesasDeputadoController(DeputadosController deputadosController) {
         this.deputadosController = deputadosController;
     }
-
-
-    public List<Despesas> getDespesasBanco() throws SQLException {
-        DespesasDepDAO despesasDepDAO = new DespesaDepImpl();
-        List<Despesas> despesaList = despesasDepDAO.getAll();
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("despesas-deputado")
+    public List<DespesaDeputado> getDespesasBanco() throws SQLException {
+        DespesasDAO despesasDepDAO = new DespesaImpl();
+        List<DespesaDeputado> despesaList = despesasDepDAO.getDespesasDeputadoView();
         return  despesaList;
     }
-    @GetMapping
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("despesas-partido")
+    public List<DespesaPartido> getDespesasPartidoView() throws SQLException {
+        DespesasDAO despesasDepDAO = new DespesaImpl();
+        List<DespesaPartido> despesaList = despesasDepDAO.getDespesasPartidoView();
+        return  despesaList;
+    }
+
     public List<Despesas> getDespesasAPI(){
         List<Deputados> deputados = deputadosController.getDeputadosBanco();
         List<Despesas> despesas = new ArrayList<>();
@@ -49,11 +57,11 @@ public class DespesasDeputadoController {
 
         return despesas;
     }
-
-    @PostMapping
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping("despesas")
     public List<Despesas> saveDespesas(){
         List<Despesas> despesaList =  getDespesasAPI();
-        DespesasDepDAO despesasDepDAO = new DespesaDepImpl();
+        DespesasDAO despesasDepDAO = new DespesaImpl();
         ArrayList<Integer> codsProp = new ArrayList<>();
         despesaList.forEach(
                 despesa -> {

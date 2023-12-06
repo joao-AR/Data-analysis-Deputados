@@ -1,6 +1,8 @@
 package com.example.dataAnalysisDeputados.DAO;
 
 import com.example.dataAnalysisDeputados.entity.Proposicao;
+import com.example.dataAnalysisDeputados.entity.ProposicaoDeputado;
+import com.example.dataAnalysisDeputados.entity.ProposicaoPartido;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -68,5 +70,45 @@ public class ProposicaoImpl implements ProposicaoDAO{
     @Override
     public int delete(Proposicao employee) {
         return 0;
+    }
+
+    @Override
+    public List<ProposicaoDeputado> getProposicaoDeputadoView() throws SQLException {
+        Connection con = Database.getConnection();
+        String sql = "SELECT * FROM camara.proposicao_deputado_view";
+
+        List<ProposicaoDeputado> proposicaoList = new ArrayList<>();
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while(rs.next()) {
+            int idDeputado = rs.getInt("id_deputado");
+            String nome = rs.getString("nome");
+            int qtd = rs.getInt("qtd_prop");
+            ProposicaoDeputado proposicao = new ProposicaoDeputado(idDeputado,nome,qtd);
+            proposicaoList.add(proposicao);
+        }
+
+        return proposicaoList;
+    }
+
+    @Override
+    public List<ProposicaoPartido> getProposicaoPartidoView() throws SQLException {
+        Connection con = Database.getConnection();
+        String sql = "SELECT * FROM camara.proposicao_partido_view";
+
+        List<ProposicaoPartido> proposicaoList = new ArrayList<>();
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while(rs.next()) {
+            int idPartido = rs.getInt("id_partido");
+            String sigla = rs.getString("sigla");
+            int qtd = rs.getInt("qtd_prop");
+            ProposicaoPartido proposicao = new ProposicaoPartido(idPartido,sigla,qtd);
+            proposicaoList.add(proposicao);
+        }
+
+        return proposicaoList;
     }
 }

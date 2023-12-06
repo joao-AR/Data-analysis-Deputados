@@ -1,6 +1,11 @@
 package com.example.dataAnalysisDeputados.DAO;
 
+import com.example.dataAnalysisDeputados.entity.DespesaDeputado;
+import com.example.dataAnalysisDeputados.entity.Despesas;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
     private static String url ="jdbc:postgresql://sicm.dc.uel.br:5432/joaor";
@@ -31,4 +36,7 @@ public class Database {
     public static void closeResultSet(ResultSet resultSet) throws SQLException {
         resultSet.close();
     }
+
+
+
 }

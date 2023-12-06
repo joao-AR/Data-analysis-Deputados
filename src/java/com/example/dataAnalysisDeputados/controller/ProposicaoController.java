@@ -3,21 +3,15 @@ package com.example.dataAnalysisDeputados.controller;
 import com.example.dataAnalysisDeputados.DAO.ProposicaoDAO;
 import com.example.dataAnalysisDeputados.DAO.ProposicaoImpl;
 
-import com.example.dataAnalysisDeputados.entity.AutorProposicao;
-import com.example.dataAnalysisDeputados.entity.Deputados;
-import com.example.dataAnalysisDeputados.entity.Proposicao;
+import com.example.dataAnalysisDeputados.entity.*;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseProposicao;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("proposicao")
 public class ProposicaoController {
 
     private final AutorProposicaoController autorProposicaoController;
@@ -28,14 +22,27 @@ public class ProposicaoController {
         this.deputadosController = deputadosController;
     }
 
-
-    @GetMapping
-    public List<Proposicao> getProposicaoBanco(){
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("proposicao-deputado")
+    public List<ProposicaoDeputado> getProposicaoDeputadosView(){
 
         ProposicaoDAO proposicaoDAO = new ProposicaoImpl();
-        List<Proposicao> proposicaoList = null;
+        List<ProposicaoDeputado> proposicaoList = null;
         try {
-            proposicaoList = proposicaoDAO.getAll();
+            proposicaoList = proposicaoDAO.getProposicaoDeputadoView();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return  proposicaoList;
+    }
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("proposicao-partido")
+    public List<ProposicaoPartido> getProposicaoPartidoView(){
+
+        ProposicaoDAO proposicaoDAO = new ProposicaoImpl();
+        List<ProposicaoPartido> proposicaoList = null;
+        try {
+            proposicaoList = proposicaoDAO.getProposicaoPartidoView();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -50,7 +57,8 @@ public class ProposicaoController {
         return proposicao;
     }
 
-    @PostMapping
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PostMapping("proposicao")
     public List<Proposicao> saveProposicao() throws SQLException {
         List<Proposicao> proposicoes = getProposicaoAPI();
         List<Deputados> deputados = deputadosController.getDeputadosAPI();

@@ -1,12 +1,14 @@
 package com.example.dataAnalysisDeputados.DAO;
 
+import com.example.dataAnalysisDeputados.entity.DespesaDeputado;
+import com.example.dataAnalysisDeputados.entity.DespesaPartido;
 import com.example.dataAnalysisDeputados.entity.Despesas;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DespesaDepImpl implements DespesasDepDAO{
+public class DespesaImpl implements DespesasDAO {
     @Override
     public Despesas get(int id) throws SQLException {
         return null;
@@ -74,4 +76,46 @@ public class DespesaDepImpl implements DespesasDepDAO{
         return 0;
     }
 
+    @Override
+    public List<DespesaDeputado> getDespesasDeputadoView() throws SQLException {
+        Connection con = Database.getConnection();
+        String sql = "SELECT * FROM camara.despesas_deputados_view";
+
+        List<DespesaDeputado> despesaList = new ArrayList<>();
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while(rs.next()) {
+            int oid = rs.getInt("id_deputado");
+            String nome = rs.getString("nome");
+            int idPartido = rs.getInt("id_partido");
+            String siglaPartido = rs.getString("sigla_partido");
+            int qtd = rs.getInt("qtd");
+            float total = rs.getFloat("total_gasto");
+            DespesaDeputado despesa = new DespesaDeputado(oid,nome,idPartido,siglaPartido,qtd,total);
+            despesaList.add(despesa);
+        }
+
+        return despesaList;
+    }
+
+    @Override
+    public List<DespesaPartido> getDespesasPartidoView() throws SQLException {
+        Connection con = Database.getConnection();
+        String sql = "SELECT * FROM camara.despesas_partidos_view";
+
+        List<DespesaPartido> despesaList = new ArrayList<>();
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while(rs.next()) {
+            int idPartido = rs.getInt("id_partido");
+            String siglaPartido = rs.getString("sigla");
+            float total = rs.getFloat("total_liquido");
+            DespesaPartido despesa = new DespesaPartido(idPartido,siglaPartido,total);
+            despesaList.add(despesa);
+        }
+
+        return despesaList;
+    }
 }
