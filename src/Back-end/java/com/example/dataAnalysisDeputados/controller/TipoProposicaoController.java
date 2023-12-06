@@ -1,13 +1,7 @@
 package com.example.dataAnalysisDeputados.controller;
 
-import DAO.PartidoDAO;
-import DAO.PartidoImpl;
 import DAO.TipoPropDAO;
 import DAO.TipoPropImpl;
-import com.example.dataAnalysisDeputados.entity.AutorProposicao;
-import com.example.dataAnalysisDeputados.entity.Despesas;
-import com.example.dataAnalysisDeputados.entity.Partidos;
-import com.example.dataAnalysisDeputados.entity.Responses.ResponsePartidos;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseTipoProposicao;
 import com.example.dataAnalysisDeputados.entity.TipoProposicao;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 @RestController
 @RequestMapping("tipoProposicao")

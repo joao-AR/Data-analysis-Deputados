@@ -2,17 +2,10 @@ package com.example.dataAnalysisDeputados.controller;
 
 import DAO.DeputadoDAO;
 import DAO.DeputadoImpl;
-import DAO.PartidoDAO;
-import DAO.PartidoImpl;
-import com.example.dataAnalysisDeputados.Interface.DeputadoRepository;
 import com.example.dataAnalysisDeputados.entity.Deputados;
 import com.example.dataAnalysisDeputados.entity.Partidos;
 import com.example.dataAnalysisDeputados.entity.Responses.ResponseDeputado;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.SQLException;
@@ -29,6 +22,7 @@ public class DeputadosController {
         this.ptdController = ptdController;
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping
     public List<Deputados> getDeputadosBanco(){
         DeputadoDAO deputadoDAO = new DeputadoImpl();
