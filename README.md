@@ -171,21 +171,24 @@ https://dadosabertos.camara.leg.br/api/v2/referencias/proposicoes/siglaTipo
 
 | Deputado    |                |             |             |            |
 | ----------- | -----------    | ----------- | ----------- |----------- |
-| id (PK)     | id_partido (FK)|    nome     |   url_foto   |   email    |
+| id (PK)     | id_partido (FK)|    nome     |   url_foto  |   email    |
+
+| Despesa_deputado |  |  |  |  |  |  |
+|------------------ |-------------- |------------------ |----|-----|--------------|--------------|
+| id (PK)           | cod_documento | id_deputado (FK) | ano | mes | tipo_despesa | valorLiquido |
 
 
-| Despesa_deputado     |                |             |             |                |            |
-| ----------- | -----------    | ----------- | ----------- |-----------     |----------- |
-| cod_documento (PK)     |id_deputado (FK)|    ano      |   mes       |   tipo_despesa  |valorLiquedo|
-
+| Partido     |                |           | 
+| ----------- | -----------    | --------- |
+| id (PK)     | sigla          |    nome   | 
 
 | Partido     |                |           |
 | ----------- | -----------    | --------- |
 | id (PK)     | sigla          |    nome   | 
 
 
-| Proposicao  |                |             |             |            |      
-| ----------- | -----------    | ----------- | ----------- |----------- |      
+| Proposicao  |                |             |              |            |      
+| ----------- | -----------    | ----------- | -----------  |----------- |      
 | id (PK)     |id_deputado (FK)|cod_tipo (FK) |   ano       |   ementa   |
 
 
@@ -227,18 +230,18 @@ alter table camara.deputado
 ```
 
 ```sql
-create table if not exists camara.despesa_deputado(
-	cod_documento int,
-	id_deputado int,
-	ano int,
-	mes int,
-	tipo_despesa char(300),
-	valor_liquedo float,
-	constraint pk_despesa primary key(cod_documento),
-	constraint fk_despesa_deputado foreign key(id_deputado) references camara.deputado(id) on update cascade,
-    constraint check_valor_positivo check (valor_liquedo > 0 or valor_liquedo = 0)
-
+    CREATE TABLE IF NOT EXISTS camara.despesa_deputado(
+        id serial PRIMARY KEY,
+        cod_documento int,
+        id_deputado int,
+        ano int,
+        mes int,
+        tipo_despesa char(300),
+        valor_liquedo float,
+    CONSTRAINT fk_despesa_deputado FOREIGN KEY(id_deputado) REFERENCES camara.deputado(id) ON UPDATE CASCADE,
+    CONSTRAINT check_valor_positivo CHECK (valor_liquedo > 0 OR valor_liquedo = 0)
 );
+
 ```
 
 ```sql
@@ -402,3 +405,16 @@ values (66385,37903,'Julio Arcoverde','https://www.camara.leg.br/internet/deputa
 ```
 
 ### Quantidade De Cada Tipo De Proposicao 
+``` sql
+CREATE VIEW camara.tipo_proposicao_view
+    AS
+     SELECT prt.cod AS cod_tipo,
+        prt.sigla,
+        count(*) AS qtd_tipo_prop
+    FROM camara.proposicao pr
+        JOIN camara.proposicao_tipo prt ON pr.cod_tipo = prt.cod
+    GROUP BY prt.cod
+    ORDER BY (count(*)) DESC;
+    ALTER TABLE camara.proposicao_partido_view
+        OWNER TO joaor;
+```
