@@ -8,12 +8,18 @@ ChartJs.register(
     BarElement
 )
 
-export function Barchart({}){
+interface BarchartProps {
+    numeros: number[];
+    labels: string[];
+}
+
+export function Barchart(props:BarchartProps){
+    
     var data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: props.labels,
         datasets: [{
             label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            data: props.numeros,
             borderWidth: 1,
             backgroundColor:[
                 'rgba(50, 168, 113)',
