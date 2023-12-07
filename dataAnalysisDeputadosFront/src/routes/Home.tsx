@@ -1,9 +1,10 @@
+import Navbar from "../components/navBar";
+
 export default function Home(){
 
     return(
-        <div>
-            <h2>Home</h2>
-            <div>teste</div>
+        <div style={{display:'flex', justifyContent:'center', alignItems:'center', width:'100vw'}}>
+           <Navbar/>
         </div>
     )
 }

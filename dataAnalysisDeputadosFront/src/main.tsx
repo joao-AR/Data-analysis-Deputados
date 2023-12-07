@@ -10,16 +10,21 @@ import {
   createBrowserRouter, RouterProvider
 } from "react-router-dom";
 import Despesas from './routes/Despesas.tsx'
+import Proposicoes from './routes/Proposicoes.tsx'
 
 const router = createBrowserRouter([
   {
     path:"/",
+    element: <Home/>
+  },
+  {
+    path:"despesas",
     element: <Despesas/>
   },
   {
-    path:"/despesas",
-    element: <Despesas/>
-  },
+    path:"proposicoes",
+    element: <Proposicoes/>  
+  }
   
 ]);
 

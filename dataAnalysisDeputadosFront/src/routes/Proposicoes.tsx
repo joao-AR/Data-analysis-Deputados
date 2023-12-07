@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { Barchart } from "../components/BarChar";
 import Navbar from "../components/navBar";
-import { useDespesaDeputadoData } from "../hooks/DespesaDeputadoDataHook";
-import { useDespesaPartidoData } from "../hooks/DespesasPartidosDataHook";
+import { useProposicaoDeputadoData } from "../hooks/ProposicaoDeputadoDataHook";
+import { useProposicaoPartidoData } from "../hooks/ProposicaoPartidoDataHook";
 
 
-export default function Despesas(){
-    const {data:deputadoData} = useDespesaDeputadoData();
-    const {data:partidoData} = useDespesaPartidoData(); 
+export default function Proposicoes(){
+    const {data:deputadoData} = useProposicaoDeputadoData();
+    const {data:partidoData} = useProposicaoPartidoData(); 
 
+    console.log("teste")
+    console.log(deputadoData)
     var numerosDeputados: number[] = []
     var nomesDeputados: string[] = []
 
@@ -21,42 +23,37 @@ export default function Despesas(){
     var numerosPartidosMenor: number[] = []
     var nomesPartidosMenor: string[] = []
 
+    deputadoData?.sort((a, b) => b.qtd - a.qtd)
+    partidoData?.sort((c, d) => d.qtd - c.qtd)
 
-    deputadoData?.sort((a, b) => b.totalGasto - a.totalGasto)
-    partidoData?.sort((c, d) => d.total_liquido - c.total_liquido)
-    
-
-    
-
-    deputadoData?.slice(0, 20).map(
+    deputadoData?.slice(0, 10).map(
         data => {
-            numerosDeputados.push(data.totalGasto)
+            numerosDeputados.push(data.qtd)
             nomesDeputados.push(data.nome)
         }
     )
 
     partidoData?.slice(0, 10).map(
         partidoData => {
-            console.log(partidoData.total_liquido)
-            numerosPartidos.push(partidoData.total_liquido)
+            numerosPartidos.push(partidoData.qtd)
             nomesPartidos.push(partidoData.sigla)
         }
     )
     
-    deputadoData?.sort((a, b) => a.totalGasto - b.totalGasto)
-    partidoData?.sort((a, b) => a.total_liquido - b.total_liquido)
+    deputadoData?.sort((a, b) => a.qtd - b.qtd)
+    partidoData?.sort((a, b) => a.qtd - b.qtd)
     
 
-    deputadoData?.slice(0, 20).map(
+    deputadoData?.slice(0, 10).map(
         data => {
-            numerosDeputadosMenor.push(data.totalGasto)
+            numerosDeputadosMenor.push(data.qtd)
             nomesDeputadosMenor.push(data.nome)
         }
     )
 
     partidoData?.slice(0, 10).map(
         partidoData => {
-            numerosPartidosMenor.push(partidoData.total_liquido)
+            numerosPartidosMenor.push(partidoData.qtd)
             nomesPartidosMenor.push(partidoData.sigla)
         }
     )
@@ -71,12 +68,12 @@ export default function Despesas(){
                 <div>
                     <h2>deputados</h2>
                     <div>
-                        <h3>Deputados com maiores gastos</h3>
+                        <h3>Deputados com maiores numeros de proposições</h3>
                         <Barchart numeros={numerosDeputados} labels={nomesDeputados}/>
                     </div>
 
                     <div>
-                        <h3>Deputados com menores gastos</h3>
+                        <h3>Deputados com menores numeros proposições</h3>
                         <Barchart numeros={numerosDeputadosMenor} labels={nomesDeputadosMenor}/>
                     </div>
                 </div>
@@ -84,12 +81,12 @@ export default function Despesas(){
                 <div>
                     <h2>Partidos</h2>
                     <div>
-                        <h3>Partidos com maiores gastos</h3>
+                        <h3>Partidos com menores numeros de proposições</h3>
                         <Barchart numeros={numerosPartidos} labels={nomesPartidos}/>
                     </div>
 
                     <div>
-                        <h3>Partidos com menores gastos</h3>
+                        <h3>Partidos com menores numeros de proposições</h3>
                         <Barchart numeros={numerosPartidosMenor} labels={nomesPartidosMenor}/>
                     </div>
                 </div>
